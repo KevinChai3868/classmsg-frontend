@@ -1,5 +1,8 @@
 import React, { useState, useRef } from 'react';
 import './index.css';
+// ✅ 全域 API_BASE（只宣告一次）
+// Netlify 環境變數請設定 VITE_API_BASE=https://classmsg.onrender.com
+const API_BASE = (import.meta.env.VITE_API_BASE || "http://localhost:8000").replace(/\/$/, "");
 
 // --- Icons ---
 const IconUpload = () => (
@@ -145,8 +148,7 @@ function App() {
         notifications: previewData
       };
 
-      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
+      
       const res = await fetch(`${API_BASE}/api/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
