@@ -103,8 +103,7 @@ function App() {
     formData.append("teacher_file", files.teacher);
     formData.append("sub_file", files.sub);
 
-    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
+   
     try {
       const res = await fetch(`${API_BASE}/api/preview`, {
         method: 'POST',
