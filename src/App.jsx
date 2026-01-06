@@ -1,6 +1,33 @@
 import React, { useState, useRef } from "react";
 import "./index.css";
 
+// ✅ API BASE 防呆取得（避免 import.meta 在非 module 環境炸掉）
+function getApiBase() {
+  // ① 最安全：HTML / window 注入（目前可不用，但保留）
+  if (typeof window !== "undefined" && window.__API_BASE__) {
+    return String(window.__API_BASE__).replace(/\/$/, "");
+  }
+
+  // ② Vite 環境（只有在真的存在時才用）
+  try {
+    if (
+      typeof import.meta !== "undefined" &&
+      import.meta.env &&
+      import.meta.env.VITE_API_BASE
+    ) {
+      return String(import.meta.env.VITE_API_BASE).replace(/\/$/, "");
+    }
+  } catch (e) {
+    // 故意吃掉錯誤，避免整個頁面死掉
+  }
+
+  // ③ 本機保底
+  "https://classmsg.onrender.com";
+}
+
+// 全站只用這個
+const API_BASE = getApiBase();
+
 // ✅ 全站 API_BASE（只定義一次）
 // Netlify 請設：VITE_API_BASE=https://classmsg.onrender.com
 const API_BASE = (import.meta.env.VITE_API_BASE || "http://localhost:8000").replace(
